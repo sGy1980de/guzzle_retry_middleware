@@ -13,9 +13,8 @@
  *
  * ------------------------------------------------------------------
  */
-namespace GuzzleRetry;
+namespace GuzzleRetry\Tests;
 
-use Carbon\Carbon;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Exception\ClientException;
@@ -26,6 +25,7 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use GuzzleRetry\GuzzleRetryMiddleware;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -33,6 +33,7 @@ use Psr\Http\Message\ResponseInterface;
 /**
  * GuzzleRetryMiddlewareTest
  *
+ * @group time-sensitive
  * @author Casey McLaughlin <caseyamcl@gmail.com>
  */
 class GuzzleRetryMiddlewareTest extends TestCase
@@ -277,8 +278,7 @@ class GuzzleRetryMiddlewareTest extends TestCase
     {
         $calculatedDelay = null;
 
-        $retryAfter = Carbon::now()
-            ->addSeconds(2)
+        $retryAfter = (new \DateTime('+ 2 seconds'))
             ->format(GuzzleRetryMiddleware::DATE_FORMAT);
 
         $responses = [
